@@ -5,6 +5,7 @@ import com.puetsnao.recipes.application.dto.CartDto
 import com.puetsnao.recipes.domain.service.CartService
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -42,6 +43,17 @@ class CartController(
         val updatedCart = cartService.addRecipeToCart(id, recipeId)
             ?: return ResponseEntity.notFound().build()
 
+        return ResponseEntity.ok(CartDto.fromDomain(updatedCart))
+    }
+    
+    @DeleteMapping("/{cartId}/recipes/{recipeId}")
+    fun removeRecipeFromCart(
+        @PathVariable cartId: Long,
+        @PathVariable recipeId: Long
+    ): ResponseEntity<CartDto> {
+        val updatedCart = cartService.removeRecipeFromCart(cartId, recipeId)
+            ?: return ResponseEntity.notFound().build()
+            
         return ResponseEntity.ok(CartDto.fromDomain(updatedCart))
     }
 }

@@ -31,4 +31,19 @@ class DefaultCartService(
         // Add the recipe to the cart using the repository method
         return cartRepository.addRecipeToCart(cart, recipe)
     }
+    
+    override fun removeRecipeFromCart(cartId: Long, recipeId: Long): Cart? {
+        // Find the cart
+        val cart = cartRepository.findById(cartId) ?: return null
+        
+        // Check if the recipe is in the cart
+        val recipeInCart = cart.recipes.any { it.recipe?.id == recipeId }
+        if (!recipeInCart) {
+            // Recipe not in cart, return null to indicate not found
+            return null
+        }
+        
+        // Remove the recipe from the cart using the repository method
+        return cartRepository.removeRecipeFromCart(cart, recipeId)
+    }
 }

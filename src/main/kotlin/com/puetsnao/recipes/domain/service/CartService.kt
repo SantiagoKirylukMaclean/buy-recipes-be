@@ -6,4 +6,5 @@ interface CartService {
     fun getAllCarts(): List<Cart>
     fun getCartById(id: Long): Cart?
     fun addRecipeToCart(cartId: Long, recipeId: Long): Cart?
+    fun removeRecipeFromCart(cartId: Long, recipeId: Long): Cart?
 }

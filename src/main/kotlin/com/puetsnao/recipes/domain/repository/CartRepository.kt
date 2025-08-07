@@ -8,4 +8,5 @@ interface CartRepository {
     fun findById(id: Long): Cart?
     fun save(cart: Cart): Cart
     fun addRecipeToCart(cart: Cart, recipe: Recipe): Cart
+    fun removeRecipeFromCart(cart: Cart, recipeId: Long): Cart?
 }

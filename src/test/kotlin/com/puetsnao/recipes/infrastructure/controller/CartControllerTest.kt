@@ -6,6 +6,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
@@ -101,6 +102,44 @@ class CartControllerTest {
         mockMvc.perform(post("/carts/1/add_recipe")
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestBody))
+            .andExpect(status().isNotFound)
+    }
+    
+    @Test
+    fun `should remove recipe from cart`() {
+        // First add a recipe to the cart
+        val requestBody = """
+            {
+                "recipeId": 1
+            }
+        """.trimIndent()
+
+        mockMvc.perform(post("/carts/1/add_recipe")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestBody))
+            .andExpect(status().isOk)
+            
+        // Then remove the recipe from the cart
+        mockMvc.perform(delete("/carts/1/recipes/1")
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.id").value(1))
+            .andExpect(jsonPath("$.totalInCents").exists())
+            .andExpect(jsonPath("$.recipes").isArray)
+            .andExpect(jsonPath("$.recipes.length()").value(0))
+    }
+    
+    @Test
+    fun `should return 404 when cart not found for remove recipe`() {
+        mockMvc.perform(delete("/carts/999/recipes/1")
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound)
+    }
+    
+    @Test
+    fun `should return 404 when recipe not found for remove`() {
+        mockMvc.perform(delete("/carts/1/recipes/999")
+            .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound)
     }
 }
