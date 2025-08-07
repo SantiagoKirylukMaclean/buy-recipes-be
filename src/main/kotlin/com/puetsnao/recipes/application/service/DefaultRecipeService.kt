@@ -21,4 +21,6 @@ class DefaultRecipeService(
         }
         return recipe
     }
+    
+    override fun count(): Long = recipeRepository.count()
 }

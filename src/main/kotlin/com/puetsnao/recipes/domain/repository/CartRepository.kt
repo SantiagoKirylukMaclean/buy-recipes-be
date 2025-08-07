@@ -9,4 +9,5 @@ interface CartRepository {
     fun save(cart: Cart): Cart
     fun addRecipeToCart(cart: Cart, recipe: Recipe): Cart
     fun removeRecipeFromCart(cart: Cart, recipeId: Long): Cart?
+    fun count(): Long
 }

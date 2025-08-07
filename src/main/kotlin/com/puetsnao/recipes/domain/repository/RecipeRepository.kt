@@ -6,4 +6,5 @@ interface RecipeRepository {
     fun findAll(): List<Recipe>
     fun findById(id: Long): Recipe?
     fun save(recipe: Recipe): Recipe
+    fun count(): Long
 }

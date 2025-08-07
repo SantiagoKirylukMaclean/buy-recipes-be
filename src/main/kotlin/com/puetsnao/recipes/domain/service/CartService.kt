@@ -7,4 +7,5 @@ interface CartService {
     fun getCartById(id: Long): Cart?
     fun addRecipeToCart(cartId: Long, recipeId: Long): Cart?
     fun removeRecipeFromCart(cartId: Long, recipeId: Long): Cart?
+    fun count(): Long
 }

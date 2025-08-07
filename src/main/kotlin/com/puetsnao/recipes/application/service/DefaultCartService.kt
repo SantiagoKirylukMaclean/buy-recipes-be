@@ -70,4 +70,6 @@ class DefaultCartService(
         // Remove the recipe from the cart using the repository method
         return cartRepository.removeRecipeFromCart(cart, recipeId)
     }
+    
+    override fun count(): Long = cartRepository.count()
 }

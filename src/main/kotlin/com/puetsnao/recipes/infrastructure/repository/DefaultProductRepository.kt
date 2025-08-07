@@ -22,4 +22,6 @@ class DefaultProductRepository(
 
     override fun save(product: Product): Product = 
         productMapper.toDomain(jpaProductRepository.save(productMapper.toEntity(product)))
+        
+    override fun count(): Long = jpaProductRepository.count()
 }

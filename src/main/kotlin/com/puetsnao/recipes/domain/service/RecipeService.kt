@@ -5,4 +5,5 @@ import com.puetsnao.recipes.domain.model.Recipe
 interface RecipeService {
     fun getAllRecipes(): List<Recipe>
     fun getRecipeById(id: Long): Recipe?
+    fun count(): Long
 }

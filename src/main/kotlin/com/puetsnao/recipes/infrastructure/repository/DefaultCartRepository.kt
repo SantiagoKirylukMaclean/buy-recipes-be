@@ -90,4 +90,6 @@ class DefaultCartRepository(
             throw e
         }
     }
+    
+    override fun count(): Long = jpaCartRepository.count()
 }

@@ -21,4 +21,6 @@ class DefaultProductService(
         }
         return product
     }
+    
+    override fun count(): Long = productRepository.count()
 }

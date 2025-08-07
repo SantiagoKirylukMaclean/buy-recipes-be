@@ -22,4 +22,6 @@ class DefaultRecipeRepository(
 
     override fun save(recipe: Recipe): Recipe = 
         recipeMapper.toDomain(jpaRecipeRepository.save(recipeMapper.toEntity(recipe)))
+        
+    override fun count(): Long = jpaRecipeRepository.count()
 }
