@@ -5,6 +5,7 @@ import com.puetsnao.recipes.domain.model.Cart
 import com.puetsnao.recipes.domain.repository.CartRepository
 import com.puetsnao.recipes.domain.repository.RecipeRepository
 import com.puetsnao.recipes.domain.service.CartService
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
@@ -12,6 +13,7 @@ class DefaultCartService(
     private val cartRepository: CartRepository,
     private val recipeRepository: RecipeRepository
 ) : CartService {
+    private val logger = LoggerFactory.getLogger(DefaultCartService::class.java)
 
     override fun getAllCarts(): List<Cart> = cartRepository.findAll()
 
@@ -19,8 +21,17 @@ class DefaultCartService(
 
     override fun addRecipeToCart(cartId: Long, recipeId: Long): Cart? {
         // Find the cart and recipe
-        val cart = cartRepository.findById(cartId) ?: return null
-        val recipe = recipeRepository.findById(recipeId) ?: throw RecipeNotFoundException(recipeId)
+        val cart = cartRepository.findById(cartId)
+        if (cart == null) {
+            logger.error("Cart not found with id: {}", cartId)
+            return null
+        }
+        
+        val recipe = recipeRepository.findById(recipeId)
+        if (recipe == null) {
+            logger.error("Recipe not found with id: {}", recipeId)
+            throw RecipeNotFoundException(recipeId)
+        }
 
         // Check if the recipe is already in the cart
         val recipeAlreadyInCart = cart.recipes.any { it.recipe?.id == recipe.id }
@@ -35,11 +46,16 @@ class DefaultCartService(
     
     override fun removeRecipeFromCart(cartId: Long, recipeId: Long): Cart? {
         // Find the cart
-        val cart = cartRepository.findById(cartId) ?: return null
+        val cart = cartRepository.findById(cartId)
+        if (cart == null) {
+            logger.error("Cart not found with id: {}", cartId)
+            return null
+        }
         
         // Check if the recipe exists
         val recipeExists = recipeRepository.findById(recipeId) != null
         if (!recipeExists) {
+            logger.error("Recipe not found with id: {}", recipeId)
             throw RecipeNotFoundException(recipeId)
         }
         
@@ -47,6 +63,7 @@ class DefaultCartService(
         val recipeInCart = cart.recipes.any { it.recipe?.id == recipeId }
         if (!recipeInCart) {
             // Recipe not in cart, return null to indicate not found
+            logger.error("Recipe with id: {} not found in cart with id: {}", recipeId, cartId)
             return null
         }
         
