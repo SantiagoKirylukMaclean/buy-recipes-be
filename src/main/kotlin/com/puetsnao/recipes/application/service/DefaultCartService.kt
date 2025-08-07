@@ -1,5 +1,6 @@
 package com.puetsnao.recipes.application.service
 
+import com.puetsnao.recipes.domain.exception.RecipeNotFoundException
 import com.puetsnao.recipes.domain.model.Cart
 import com.puetsnao.recipes.domain.repository.CartRepository
 import com.puetsnao.recipes.domain.repository.RecipeRepository
@@ -19,7 +20,7 @@ class DefaultCartService(
     override fun addRecipeToCart(cartId: Long, recipeId: Long): Cart? {
         // Find the cart and recipe
         val cart = cartRepository.findById(cartId) ?: return null
-        val recipe = recipeRepository.findById(recipeId) ?: return null
+        val recipe = recipeRepository.findById(recipeId) ?: throw RecipeNotFoundException(recipeId)
 
         // Check if the recipe is already in the cart
         val recipeAlreadyInCart = cart.recipes.any { it.recipe?.id == recipe.id }
@@ -35,6 +36,12 @@ class DefaultCartService(
     override fun removeRecipeFromCart(cartId: Long, recipeId: Long): Cart? {
         // Find the cart
         val cart = cartRepository.findById(cartId) ?: return null
+        
+        // Check if the recipe exists
+        val recipeExists = recipeRepository.findById(recipeId) != null
+        if (!recipeExists) {
+            throw RecipeNotFoundException(recipeId)
+        }
         
         // Check if the recipe is in the cart
         val recipeInCart = cart.recipes.any { it.recipe?.id == recipeId }
