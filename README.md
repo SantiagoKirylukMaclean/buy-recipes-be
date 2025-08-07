@@ -86,3 +86,20 @@ Run the tests with:
 ```bash
 ./gradlew test
 ```
+
+## API Testing with HTTP Client
+
+The project includes an `api-examples.http` file that contains examples of all API operations. You can use this file with:
+
+- IntelliJ IDEA's HTTP Client
+- Visual Studio Code with the REST Client extension
+- Any other HTTP client tool that supports the `.http` format
+
+To use the file:
+
+1. Open `api-examples.http` in your IDE
+2. Make sure the application is running
+3. Click on the "Run" button next to any request to execute it
+4. View the response directly in your IDE
+
+This allows you to quickly test all API endpoints without needing to set up Postman or another external tool.

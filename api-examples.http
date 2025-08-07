@@ -1,0 +1,55 @@
+### Buy Recipes API Examples
+# This file contains examples of all API operations for the Buy Recipes application
+# You can use this file with tools like IntelliJ IDEA's HTTP Client, VS Code's REST Client, or similar tools
+
+### Variables
+@baseUrl = http://localhost:8080
+
+### ==================== PRODUCTS API ====================
+
+### Get all products
+GET {{baseUrl}}/products
+Accept: application/json
+
+### Get product by ID
+# Replace {id} with an actual product ID
+GET {{baseUrl}}/products/1
+Accept: application/json
+
+### ==================== RECIPES API ====================
+
+### Get all recipes
+GET {{baseUrl}}/recipes
+Accept: application/json
+
+### Get recipe by ID
+# Replace {id} with an actual recipe ID
+GET {{baseUrl}}/recipes/1
+Accept: application/json
+
+### ==================== CARTS API ====================
+
+### Get all carts
+GET {{baseUrl}}/carts
+Accept: application/json
+
+### Get cart by ID
+# Replace {id} with an actual cart ID
+GET {{baseUrl}}/carts/1
+Accept: application/json
+
+### Add recipe to cart
+# Replace {cartId} with an actual cart ID
+# Replace recipeId value with an actual recipe ID
+POST {{baseUrl}}/carts/1/add_recipe
+Content-Type: application/json
+Accept: application/json
+
+{
+  "recipeId": 1
+}
+
+### Remove recipe from cart
+# Replace {cartId} and {recipeId} with actual IDs
+DELETE {{baseUrl}}/carts/1/recipes/1
+Accept: application/json
