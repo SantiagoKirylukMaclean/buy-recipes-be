@@ -2,15 +2,33 @@ package com.puetsnao.recipes.application.service
 
 import com.puetsnao.recipes.domain.model.Cart
 import com.puetsnao.recipes.domain.repository.CartRepository
+import com.puetsnao.recipes.domain.repository.RecipeRepository
 import com.puetsnao.recipes.domain.service.CartService
 import org.springframework.stereotype.Service
 
 @Service
 class DefaultCartService(
-    private val cartRepository: CartRepository
+    private val cartRepository: CartRepository,
+    private val recipeRepository: RecipeRepository
 ) : CartService {
-    
+
     override fun getAllCarts(): List<Cart> = cartRepository.findAll()
-    
+
     override fun getCartById(id: Long): Cart? = cartRepository.findById(id)
+
+    override fun addRecipeToCart(cartId: Long, recipeId: Long): Cart? {
+        // Find the cart and recipe
+        val cart = cartRepository.findById(cartId) ?: return null
+        val recipe = recipeRepository.findById(recipeId) ?: return null
+
+        // Check if the recipe is already in the cart
+        val recipeAlreadyInCart = cart.recipes.any { it.recipe?.id == recipe.id }
+        if (recipeAlreadyInCart) {
+            // Recipe already in cart, just return the cart
+            return cart
+        }
+
+        // Add the recipe to the cart using the repository method
+        return cartRepository.addRecipeToCart(cart, recipe)
+    }
 }

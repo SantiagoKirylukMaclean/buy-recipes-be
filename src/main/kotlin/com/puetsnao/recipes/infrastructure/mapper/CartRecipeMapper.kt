@@ -29,7 +29,7 @@ class CartRecipeMapper(
         // Copy the base entity properties
         cartRecipe.id = cartRecipeEntity.id
         cartRecipe.createdAt = cartRecipeEntity.createdAt
-        cartRecipe.updatedAt = cartRecipeEntity.updatedAt
+        cartRecipe.updatedAt = cartRecipe.updatedAt
 
         return cartRecipe
     }
