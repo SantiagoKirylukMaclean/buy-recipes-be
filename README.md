@@ -34,6 +34,8 @@ The architecture strictly separates domain models from infrastructure concerns:
 - GET /recipes/{id} - Get a recipe by ID with its products
 - GET /v1/carts - List all carts
 - GET /v1/carts/{id} - Get a cart by ID with its products and recipes
+- GET /actuator/health - Check application health status
+- GET /actuator/info - Get application information
 
 ## Running the Application
 
@@ -103,3 +105,18 @@ To use the file:
 4. View the response directly in your IDE
 
 This allows you to quickly test all API endpoints without needing to set up Postman or another external tool.
+
+## Monitoring and Health Checks
+
+The application includes Spring Boot Actuator for monitoring and health checks:
+
+- **Health Check**: Access `/api/v1/actuator/health` to view the application's health status
+  - Shows detailed information about various health indicators (database, disk space, etc.)
+  - Returns HTTP 200 OK when the application is healthy
+  - Returns HTTP 503 Service Unavailable when the application is unhealthy
+
+- **Application Info**: Access `/api/v1/actuator/info` to view application information
+  - Provides details about the application name, description, version, and development team
+  - Useful for verifying deployment information
+
+These endpoints are secured and only expose the necessary information for monitoring purposes.
